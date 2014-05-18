@@ -27,7 +27,7 @@ exit;
 sub view {
 	my %param = @_;
 
-	&setHeader;
+	&setHeader(%param);
 
 	&connectDB;
 	$sth = $db->prepare("SELECT * FROM bbs ORDER BY time DESC");
@@ -76,7 +76,7 @@ sub edit {
 	$sth -> execute();
 	&disconnectDB;
 	
-	&setHeader;
+	&setHeader(%param);
 
 
 	while (@data = $sth -> fetchrow_array) {
@@ -100,7 +100,7 @@ sub edit {
 sub confirm {
 	my %param = @_;
 
-	&setHeader;
+	&setHeader(%param);
 	
 	for my $key ( keys %param ) {
 		$param{$key} =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
@@ -119,7 +119,7 @@ sub finish {
 	&insertValue(%param);
 	&disconnectDB;
 	
-	&setHeader;
+	&setHeader(%param);
 	
 	print <<"EOM";
 done!</br></br>
@@ -169,8 +169,13 @@ sub readParse {
 
 # Set Header
 sub setHeader {
-		print "Content-type: text/html\n\n";
-		print <<"EOM";
+	
+	my %param = @_;
+
+	print <<"EOM";
+Content-type: text/html
+Set-Cookie: name=$param{'name'}
+
 <HTML>
 <HEAD>
   <META http-equiv="Content-Type" content="text/html; charset=utf_8">
