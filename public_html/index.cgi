@@ -116,8 +116,7 @@ sub finish {
 	my %param = @_;
 	
 	&connectDB;
-	#&insertValue(%param);
-	$sql = &insertValue(%param);
+	&insertValue(%param);
 	&disconnectDB;
 	
 	&setHeader;
@@ -125,7 +124,6 @@ sub finish {
 	print <<"EOM";
 done!</br></br>
 <a href="$ENV{'SCRIPT_NAME'}">戻る</a>
-$sql
 EOM
 	&setFooter;
 }
