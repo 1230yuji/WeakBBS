@@ -102,8 +102,10 @@ sub confirm {
 
 	&setHeader;
 	
-	$param{'name'} =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
-	$param{'message'} =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
+	for my $key ( keys %param ) {
+		$param{$key} =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
+		$param{$key} =~ s/\+/ /g;
+	}
 
 	&setConfirm(%param);
 
